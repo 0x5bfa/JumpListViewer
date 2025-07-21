@@ -17,7 +17,9 @@ namespace JumpListSample
 	{
 		string _appId = null!;
 
-		IAutomaticDestinationList* _thisPtr = default;
+		IAutomaticDestinationList* _autoDestListPtr = default;
+		ICustomDestinationList* _customDestListPtr = default;
+		ICustomDestinationList2* _customDestList2Ptr = default;
 
 		public static JumpListManager? Initialize(string szAppId)
 		{
@@ -35,7 +37,7 @@ namespace JumpListSample
 			fixed (char* pszAppId = szAppId)
 				hr = ptr->Initialize(pszAppId, default, default);
 
-			return ptr is null ? null : new() { _thisPtr = ptr, _appId = szAppId };
+			return ptr is null ? null : new() { _autoDestListPtr = ptr, _appId = szAppId };
 		}
 
 		public bool HasListOf(DESTLISTTYPE type)
@@ -46,10 +48,10 @@ namespace JumpListSample
 			using ComPtr<IObjectCollection> pObjectCollection = default;
 
 			BOOL fHasList = default;
-			hr = _thisPtr->HasList(&fHasList);
+			hr = _autoDestListPtr->HasList(&fHasList);
 			if ((bool)fHasList is false) return false;
 
-			hr = _thisPtr->GetList(type, 1, GETDESTLISTFLAGS.NONE, &IID_IObjectCollection, (void**)pObjectCollection.GetAddressOf());
+			hr = _autoDestListPtr->GetList(type, 1, GETDESTLISTFLAGS.NONE, &IID_IObjectCollection, (void**)pObjectCollection.GetAddressOf());
 
 			hr = pObjectCollection.Get()->GetCount(out uint pcObjects);
 
@@ -63,7 +65,7 @@ namespace JumpListSample
 			Guid IID_IObjectCollection = IObjectCollection.IID_Guid;
 			using ComPtr<IObjectCollection> pObjectCollection = default;
 
-			hr = _thisPtr->GetList(type, count, GETDESTLISTFLAGS.NONE, &IID_IObjectCollection, (void**)pObjectCollection.GetAddressOf());
+			hr = _autoDestListPtr->GetList(type, count, GETDESTLISTFLAGS.NONE, &IID_IObjectCollection, (void**)pObjectCollection.GetAddressOf());
 			hr = pObjectCollection.Get()->GetCount(out uint pcObjects);
 
 			List<JumpListItem> items = [];
@@ -84,7 +86,7 @@ namespace JumpListSample
 
 				int fIsPinned = default;
 
-				_thisPtr->IsPinned((IUnknown*)pShellItem.Get(), &fIsPinned);
+				_autoDestListPtr->IsPinned((IUnknown*)pShellItem.Get(), &fIsPinned);
 
 				BitmapImage image;
 				var imageAsByteArray = ThumbnailHelper.GetThumbnail(pShellItem, (int)(32 * App.Dpi));
@@ -131,8 +133,8 @@ namespace JumpListSample
 
 		public void Dispose()
 		{
-			if (_thisPtr is not null)
-				((IUnknown*)_thisPtr)->Release();
+			if (_autoDestListPtr is not null)
+				((IUnknown*)_autoDestListPtr)->Release();
 		}
 	}
 }
