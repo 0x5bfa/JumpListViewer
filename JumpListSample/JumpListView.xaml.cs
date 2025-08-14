@@ -19,7 +19,7 @@ namespace JumpListSample
 
 		private void JumpListView_Loaded(object sender, RoutedEventArgs e)
 		{
-			ViewModel.AppId = "Microsoft.Windows.Explorer"; // Set the default AppId
+			ViewModel.AppId = "MSEdge"; // Set the default AppId
 		}
 	}
 }

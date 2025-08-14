@@ -13,26 +13,16 @@ namespace JumpListSample
 	{
 		public ObservableCollection<BaseJumpListItem> JumpListItems { get; } = [];
 
-		public string? AppId
-		{
-			get => field;
-			set
-			{
-				if (SetProperty(ref field, value))
-				{
-					OnAppIdChanged(value);
-				}
-			}
-		}
+		public string? AppId { get => field; set => SetProperty(ref field, value); }
 
-		//public ICommand RefreshJumpListCommand;
+		public ICommand RefreshJumpListCommand;
 
 		public JumpListViewModel()
 		{
-			//RefreshJumpListCommand = new RelayCommand(ExecuteRefreshJumpListCommand);
+			RefreshJumpListCommand = new RelayCommand(ExecuteRefreshJumpListCommand);
 		}
 
-		private void OnAppIdChanged(string? value)
+		private void ExecuteRefreshJumpListCommand()
 		{
 			JumpListItems.Clear();
 
@@ -47,6 +37,7 @@ namespace JumpListSample
 					JumpListItems.Add(item);
 				}
 			}
+
 			if (manager.HasListOf(DESTLISTTYPE.RECENT))
 			{
 				JumpListItems.Add(new JumpListSectionItem() { Text = "Recent" });
@@ -58,7 +49,10 @@ namespace JumpListSample
 				}
 			}
 
-			manager.EnumerateCustomDestinations();
+			foreach (var item in manager.EnumerateCustomDestinations())
+			{
+				JumpListItems.Add(item);
+			}
 
 			manager.Dispose();
 		}

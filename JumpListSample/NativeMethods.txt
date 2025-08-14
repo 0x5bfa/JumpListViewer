@@ -237,3 +237,7 @@ GetMenuItemInfo
 IObjectCollection
 GdiplusStartup
 GdiplusShutdown
+IPropertyStore
+PKEY_Title
+SHLoadIndirectString
+ExtractIcon

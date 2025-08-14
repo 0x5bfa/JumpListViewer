@@ -51,9 +51,9 @@ namespace JumpListSample
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public HRESULT IsPinned(IUnknown* pObj, int* fIsPinned)
+		public HRESULT IsPinned(IUnknown* pObj, BOOL* fIsPinned)
 		{
-			return (HRESULT)((delegate* unmanaged[MemberFunction]<IAutomaticDestinationList*, IUnknown*, int*, int>)lpVtbl[8])
+			return (HRESULT)((delegate* unmanaged[MemberFunction]<IAutomaticDestinationList*, IUnknown*, BOOL*, int>)lpVtbl[8])
 				((IAutomaticDestinationList*)Unsafe.AsPointer(ref this), pObj, fIsPinned);
 		}
 

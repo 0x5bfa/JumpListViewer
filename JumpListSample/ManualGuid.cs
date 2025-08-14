@@ -69,6 +69,15 @@ namespace Windows.Win32
 
 		[GuidRVAGen.Guid("92CA9DCD-5622-4BBA-A805-5E9F541BD8C9")]
 		public static partial Guid* IID_IObjectArray { get; }
+
+		[GuidRVAGen.Guid("00000000-0000-0000-C000-000000000046")]
+		public static partial Guid* IID_IUnknown { get; }
+
+		[GuidRVAGen.Guid("886D8EEB-8CF2-4446-8D02-CDBA1DBDCF99")]
+		public static partial Guid* IID_IPropertyStore { get; }
+
+		[GuidRVAGen.Guid("5632B1A4-E38A-400A-928A-D4CD63230295")]
+		public static partial Guid* IID_IObjectCollection { get; }
 	}
 
 	public static unsafe partial class CLSID

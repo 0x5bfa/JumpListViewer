@@ -11,6 +11,8 @@ namespace JumpListSample
 		{
 			InitializeComponent();
 
+			AppWindow.Resize(new(600, 800));
+
 			ExtendsContentIntoTitleBar = true;
 		}
 	}
