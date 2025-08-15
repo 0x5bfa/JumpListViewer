@@ -3,7 +3,7 @@
 
 using Microsoft.UI.Xaml.Media.Imaging;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public abstract class BaseJumpListItem
 	{

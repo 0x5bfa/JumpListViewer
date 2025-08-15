@@ -6,7 +6,7 @@ using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public sealed partial class JumpListView : UserControl
 	{

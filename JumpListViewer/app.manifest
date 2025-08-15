@@ -2,7 +2,7 @@
 <!--  Copyright (c) 0x5BFA. Licensed under the MIT License.  -->
 <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
 
-	<assemblyIdentity version="1.0.0.0" name="JumpListSample.app"/>
+	<assemblyIdentity version="1.0.0.0" name="JumpListViewer.app"/>
 
 	<application xmlns="urn:schemas-microsoft-com:asm.v3">
 		<windowsSettings>

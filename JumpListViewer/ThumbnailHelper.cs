@@ -13,7 +13,7 @@ using Windows.Win32.System.Com;
 using Windows.Win32.UI.Shell;
 using Windows.Win32.UI.WindowsAndMessaging;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public unsafe static class ThumbnailHelper
 	{

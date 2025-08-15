@@ -9,7 +9,7 @@
 	<Identity Name="40f28a7e-a0b5-4ff5-9055-5f3784cbccc5" Publisher="CN=0x5BFA" Version="1.0.0.0" />
 
 	<Properties>
-		<DisplayName>JumpListSample</DisplayName>
+		<DisplayName>JumpListViewer</DisplayName>
 		<PublisherDisplayName>0x5BFA</PublisherDisplayName>
 		<Logo>Assets\StoreLogo.png</Logo>
 	</Properties>
@@ -27,8 +27,8 @@
 			Executable="$targetnametoken$.exe"
 			EntryPoint="$targetentrypoint$">
 			<uap:VisualElements
-				DisplayName="JumpListSample"
-				Description="JumpListSample"
+				DisplayName="JumpListViewer"
+				Description="JumpListViewer"
 				BackgroundColor="transparent"
 				Square150x150Logo="Assets\Square150x150Logo.png"
 				Square44x44Logo="Assets\Square44x44Logo.png">

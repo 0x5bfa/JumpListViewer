@@ -6,7 +6,7 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.GdiPlus;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public unsafe partial class App : Application
 	{

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public class JumpListItem : BaseJumpListItem
 	{

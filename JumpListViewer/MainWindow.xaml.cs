@@ -3,7 +3,7 @@
 
 using Microsoft.UI.Xaml;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public sealed partial class MainWindow : Window
 	{

@@ -16,7 +16,7 @@ using Windows.Win32.UI.Shell;
 using Windows.Win32.UI.Shell.Common;
 using Windows.Win32.UI.Shell.PropertiesSystem;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public unsafe partial class JumpListManager : IDisposable
 	{

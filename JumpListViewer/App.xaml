@@ -1,9 +1,9 @@
 <!--  Copyright (c) 0x5BFA. Licensed under the MIT License.  -->
 <Application
-	x:Class="JumpListSample.App"
+	x:Class="JumpListViewer.App"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="using:JumpListSample">
+	xmlns:local="using:JumpListViewer">
 
 	<Application.Resources>
 

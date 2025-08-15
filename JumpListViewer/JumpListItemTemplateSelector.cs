@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 
-namespace JumpListSample
+namespace JumpListViewer
 {
 	public class JumpListItemTemplateSelector : DataTemplateSelector
 	{
