@@ -1,8 +1,9 @@
 ﻿// Copyright (c) 0x5BFA. All rights reserved.
 // Licensed under the MIT License.
 
-using Microsoft.UI.Xaml.Media.Imaging;
 using JumpListViewer.Data;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -78,14 +79,14 @@ namespace JumpListViewer.Utilities
 			return CreateCollectionFromIObjectCollection(pObjectCollection.Get());
 		}
 
-		public IEnumerable<BaseJumpListItem> EnumerateCustomDestinations()
+		public IEnumerable<JumpListGroupItem> EnumerateCustomDestinations()
 		{
 			HRESULT hr = default;
 
 			uint dwCategoryCount = 0U;
 			hr = _customDestList2Ptr->GetCategoryCount(&dwCategoryCount);
 
-			List<BaseJumpListItem> items = [];
+			List<JumpListGroupItem> groupedItems = [];
 
 			for (uint dwCategoryIndex = 0U; dwCategoryIndex < dwCategoryCount; dwCategoryIndex++)
 			{
@@ -104,13 +105,15 @@ namespace JumpListViewer.Utilities
 					pszCategoryName = (char*)NativeMemory.AllocZeroed(256);
 					PInvoke.SHLoadIndirectString(category.Anonymous.Name, pszCategoryName, 256, null);
 
-					// Add the category header item
-					items.Add(new JumpListSectionItem() { Text = new(pszCategoryName) });
+					var groupedItem = new JumpListGroupItem() { Key = new(pszCategoryName) };
 
 					// Enumerate and add the destinations in the category to the list
 					using ComPtr<IObjectCollection> pObjectCollection = default;
 					hr = _customDestList2Ptr->EnumerateCategoryDestinations(dwCategoryIndex, IID.IID_IObjectCollection, (void**)pObjectCollection.GetAddressOf()).ThrowOnFailure();
-					items.AddRange(CreateCollectionFromIObjectCollection(pObjectCollection.Get()));
+					groupedItem.AddRange(CreateCollectionFromIObjectCollection(pObjectCollection.Get()));
+
+					// Add the category to the list
+					groupedItems.Add(groupedItem);
 				}
 				finally
 				{
@@ -119,7 +122,7 @@ namespace JumpListViewer.Utilities
 				}
 			}
 
-			return items;
+			return groupedItems;
 		}
 
 		public IEnumerable<BaseJumpListItem> EnumerateTasks()

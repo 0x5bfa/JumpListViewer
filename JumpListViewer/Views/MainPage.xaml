@@ -16,38 +16,6 @@
 			EmptyValue="Visible"
 			NotEmptyValue="Collapsed" />
 
-		<data:JumpListItemTemplateSelector
-			x:Key="JumpListItemTemplateSelector"
-			Item="{StaticResource JumpListItemTemplate}"
-			SectionItem="{StaticResource JumpListSectionItemTemplate}" />
-
-		<DataTemplate x:Key="JumpListSectionItemTemplate" x:DataType="data:JumpListSectionItem">
-			<Grid Margin="12,8">
-				<TextBlock
-					Style="{StaticResource SubtitleTextBlockStyle}"
-					Text="{Binding Text}"
-					TextTrimming="CharacterEllipsis"
-					TextWrapping="NoWrap" />
-			</Grid>
-		</DataTemplate>
-
-		<DataTemplate x:Key="JumpListItemTemplate" x:DataType="data:JumpListItem">
-			<Grid Margin="12,8">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="16" />
-					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
-				<Image Source="{x:Bind Icon}" />
-				<TextBlock
-					Grid.Column="1"
-					Margin="12,0"
-					Text="{Binding Text}"
-					TextTrimming="CharacterEllipsis"
-					TextWrapping="NoWrap" />
-			</Grid>
-		</DataTemplate>
-
 	</Page.Resources>
 
 	<Grid>
@@ -116,33 +84,75 @@
 				</ListView.ItemTemplate>
 			</ListView>
 
-			<ScrollView
+			<Grid
 				Grid.Column="1"
 				Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
 				BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
 				BorderThickness="1,1,0,0"
 				CornerRadius="8,0,0,0">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="3*" />
+					<ColumnDefinition Width="240" />
+				</Grid.ColumnDefinitions>
 
-				<Grid Margin="36">
+				<Grid Padding="36,24,18,36">
 
 					<TextBlock
 						x:Name="NoJumpListAvailableTextBlock"
 						HorizontalAlignment="Center"
 						VerticalAlignment="Center"
 						Text="No jump list available"
-						Visibility="{x:Bind ViewModel.JumpListItems, Converter={StaticResource EmptyCollectionToNegateVisibilityConverter}, Mode=OneWay}" />
+						Visibility="{x:Bind ViewModel.JumpListItems.View, Converter={StaticResource EmptyCollectionToNegateVisibilityConverter}, Mode=OneWay}" />
 
-					<StackPanel>
+					<ListView x:Name="JumpListItemsControl" ItemsSource="{x:Bind ViewModel.JumpListItems.View, Mode=OneWay}">
+						<ListView.ItemsPanel>
+							<ItemsPanelTemplate>
+								<ItemsStackPanel AreStickyGroupHeadersEnabled="True" />
+							</ItemsPanelTemplate>
+						</ListView.ItemsPanel>
 
-						<ItemsControl
-							x:Name="JumpListItemsControl"
-							ItemTemplateSelector="{StaticResource JumpListItemTemplateSelector}"
-							ItemsSource="{x:Bind ViewModel.JumpListItems, Mode=OneWay}" />
+						<ListView.ItemTemplate>
+							<DataTemplate x:DataType="data:JumpListItem">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="16" />
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="Auto" />
+									</Grid.ColumnDefinitions>
+									<Viewbox Width="16" Height="16">
+										<Image Source="{x:Bind Icon}" />
+									</Viewbox>
+									<TextBlock
+										Grid.Column="1"
+										Margin="12,0"
+										Text="{Binding Text}"
+										TextTrimming="CharacterEllipsis"
+										TextWrapping="NoWrap" />
+								</Grid>
+							</DataTemplate>
+						</ListView.ItemTemplate>
 
-					</StackPanel>
+						<ListView.GroupStyle>
+							<GroupStyle>
+								<GroupStyle.HeaderTemplate>
+									<DataTemplate x:DataType="data:JumpListGroupItem">
+										<Border>
+											<TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind Key}" />
+										</Border>
+									</DataTemplate>
+								</GroupStyle.HeaderTemplate>
+							</GroupStyle>
+						</ListView.GroupStyle>
+
+					</ListView>
 
 				</Grid>
-			</ScrollView>
+
+				<StackPanel Grid.Column="1" Padding="18,36,36,36">
+					<Button HorizontalAlignment="Stretch" Content="Pin the item" />
+				</StackPanel>
+
+			</Grid>
 
 		</Grid>
 	</Grid>

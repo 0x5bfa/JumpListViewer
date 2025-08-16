@@ -1,8 +1,10 @@
 ﻿// Copyright (c) 0x5BFA. All rights reserved.
 // Licensed under the MIT License.
 
+using CommunityToolkit.Mvvm.ComponentModel;
 using JumpListViewer.Data;
 using JumpListViewer.Utilities;
+using Microsoft.UI.Xaml.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,11 +20,13 @@ using Windows.Win32.UI.Shell.PropertiesSystem;
 
 namespace JumpListViewer.ViewModels
 {
-	public unsafe class MainPageViewModel
+	public unsafe class MainPageViewModel : ObservableObject
 	{
 		public ObservableCollection<ApplicationItem> ApplicationItems { get; set; } = [];
 
-		public ObservableCollection<BaseJumpListItem> JumpListItems { get; set; } = [];
+		private ObservableCollection<JumpListGroupItem> GroupedJumpListItems { get; set; } = [];
+
+		public CollectionViewSource? JumpListItems { get => field; set => SetProperty(ref field, value); }
 
 		public int SelectedIndexOfApplicationItems { get; set; } = 0;
 
@@ -75,7 +79,12 @@ namespace JumpListViewer.ViewModels
 
 		public void EnumerateJumpListItems()
 		{
-			JumpListItems.Clear();
+			JumpListItems = new()
+			{
+				IsSourceGrouped = true,
+			};
+
+			GroupedJumpListItems.Clear();
 
 			var amuid = ApplicationItems.ElementAt(SelectedIndexOfApplicationItems).AppUserModelID;
 
@@ -86,48 +95,55 @@ namespace JumpListViewer.ViewModels
 			InsertCustomDestinationItems(manager);
 			InsertTaskItems(manager);
 
+			JumpListItems.Source = new ObservableCollection<JumpListGroupItem>(GroupedJumpListItems);
+
 			manager.Dispose();
 		}
 
 		private void InsertAutomaticDestinationItems(JumpListManager manager)
 		{
+			var pinnedItems = new JumpListGroupItem() { Key = "Pinned" };
+
 			if (manager.HasAutomaticDestinationsOf(DESTLISTTYPE.PINNED))
-			{
-				JumpListItems.Add(new JumpListSectionItem() { Text = "Pinned" });
 				foreach (var item in manager.EnumerateAutomaticDestinations(DESTLISTTYPE.PINNED))
-				{
-					JumpListItems.Add(item);
-				}
-			}
+					pinnedItems.Add(item);
+
+			if (pinnedItems.Count is not 0)
+				GroupedJumpListItems.Add(pinnedItems);
+
+			var recentItems = new JumpListGroupItem() { Key = "Recent" };
 
 			if (manager.HasAutomaticDestinationsOf(DESTLISTTYPE.RECENT))
 			{
-				JumpListItems.Add(new JumpListSectionItem() { Text = "Recent" });
 				foreach (var item in manager.EnumerateAutomaticDestinations(DESTLISTTYPE.RECENT))
 				{
-					if (JumpListItems.OfType<JumpListItem>().Where(x => x.IsPinned).Where(x => x.Text == item.Text).Any())
+					if (recentItems.OfType<JumpListItem>().Where(x => x.IsPinned).Where(x => x.Text == item.Text).Any())
 						continue;
-					JumpListItems.Add(item);
+					recentItems.Add(item);
 				}
 			}
+
+			if (recentItems.Count is not 0)
+				GroupedJumpListItems.Add(recentItems);
 		}
 
 		private void InsertCustomDestinationItems(JumpListManager manager)
 		{
 			foreach (var item in manager.EnumerateCustomDestinations())
 			{
-				JumpListItems.Add(item);
+				GroupedJumpListItems.Add(item);
 			}
 		}
 
 		private void InsertTaskItems(JumpListManager manager)
 		{
-			JumpListItems.Add(new JumpListSectionItem() { Text = "Tasks" });
+			var taskItems = new JumpListGroupItem() { Key = "Tasks" };
 
 			foreach (var item in manager.EnumerateTasks())
-			{
-				JumpListItems.Add(item);
-			}
+				taskItems.Add(item);
+
+			if (taskItems.Count is not 0)
+				GroupedJumpListItems.Add(taskItems);
 		}
 	}
 }
