@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
-namespace JumpListViewer
+namespace JumpListViewer.Views
 {
 	public sealed partial class MainWindow : Window
 	{
@@ -11,9 +12,12 @@ namespace JumpListViewer
 		{
 			InitializeComponent();
 
-			AppWindow.Resize(new(600, 800));
-
 			ExtendsContentIntoTitleBar = true;
+
+			var frame = new Frame();
+			frame.Navigate(typeof(MainPage));
+
+			Content = frame;
 		}
 	}
 }

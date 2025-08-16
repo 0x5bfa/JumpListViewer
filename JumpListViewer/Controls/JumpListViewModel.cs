@@ -3,11 +3,14 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using JumpListViewer.Data;
+using JumpListViewer.Utilities;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Windows.Win32.System.Com;
 
-namespace JumpListViewer
+namespace JumpListViewer.Controls
 {
 	public partial class JumpListViewModel : ObservableObject
 	{

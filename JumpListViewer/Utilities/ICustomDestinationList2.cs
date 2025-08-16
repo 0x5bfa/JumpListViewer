@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
 
-namespace JumpListViewer
+namespace Windows.Win32.System.Com
 {
 	// https://github.com/GigabyteProductions/classicshell/blob/HEAD/src/ClassicStartMenu/ClassicStartMenuDLL/JumpLists.cpp#L397
 	public unsafe partial struct ICustomDestinationList2

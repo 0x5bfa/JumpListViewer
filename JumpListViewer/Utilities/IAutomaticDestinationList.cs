@@ -7,7 +7,7 @@ using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.System.Com;
 
-namespace JumpListViewer
+namespace Windows.Win32.System.Com
 {
 	public unsafe partial struct IAutomaticDestinationList : IComIID
 	{

@@ -3,7 +3,7 @@
 
 using Microsoft.UI.Xaml.Controls.Primitives;
 
-namespace JumpListViewer
+namespace JumpListViewer.Controls
 {
 	public partial class JumpListItemButton : ButtonBase
 	{

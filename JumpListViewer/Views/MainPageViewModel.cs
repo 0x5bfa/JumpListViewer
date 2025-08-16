@@ -3,8 +3,8 @@
 
 namespace JumpListViewer
 {
-	public abstract class BaseJumpListItem
+	public class MainPageViewModel
 	{
-		public string? Text { get; set; }
+
 	}
 }

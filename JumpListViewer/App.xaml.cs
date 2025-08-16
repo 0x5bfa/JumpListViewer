@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.UI.Xaml;
+using JumpListViewer.Views;
 using Windows.Win32;
 using Windows.Win32.Foundation;
 using Windows.Win32.Graphics.GdiPlus;
