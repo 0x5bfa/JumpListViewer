@@ -3,9 +3,150 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:data="using:JumpListViewer.Data"
 	xmlns:local="using:JumpListViewer"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:wctconverters="using:CommunityToolkit.WinUI.Converters"
 	mc:Ignorable="d">
 
-	<Grid />
+	<Page.Resources>
+
+		<x:Double x:Key="ListViewItemMinHeight">32</x:Double>
+
+		<wctconverters:EmptyCollectionToObjectConverter
+			x:Key="EmptyCollectionToNegateVisibilityConverter"
+			EmptyValue="Visible"
+			NotEmptyValue="Collapsed" />
+
+		<data:JumpListItemTemplateSelector
+			x:Key="JumpListItemTemplateSelector"
+			Item="{StaticResource JumpListItemTemplate}"
+			SectionItem="{StaticResource JumpListSectionItemTemplate}" />
+
+		<DataTemplate x:Key="JumpListSectionItemTemplate" x:DataType="data:JumpListSectionItem">
+			<Grid Margin="12,7,12,6" ColumnSpacing="8">
+				<TextBlock
+					Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+					Style="{StaticResource CaptionTextBlockStyle}"
+					Text="{Binding Text}"
+					TextTrimming="CharacterEllipsis"
+					TextWrapping="NoWrap" />
+			</Grid>
+		</DataTemplate>
+
+		<DataTemplate x:Key="JumpListItemTemplate" x:DataType="data:JumpListItem">
+			<Grid Margin="12,7,24,6">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="16" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Image Source="{x:Bind Icon}" />
+				<TextBlock
+					Grid.Column="1"
+					Margin="12,0"
+					Text="{Binding Text}"
+					TextTrimming="CharacterEllipsis"
+					TextWrapping="NoWrap" />
+			</Grid>
+		</DataTemplate>
+
+	</Page.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="40" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<StackPanel Grid.Row="0" Orientation="Horizontal">
+			<TextBlock
+				Margin="24,0"
+				VerticalAlignment="Center"
+				Text="Jump List Viewer" />
+		</StackPanel>
+
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<ListView
+				x:Name="ApplicationItemsListView"
+				Grid.Column="0"
+				Width="300"
+				Padding="8,12"
+				ItemsSource="{x:Bind ViewModel.ApplicationItems}"
+				SelectedIndex="{x:Bind ViewModel.SelectedIndexOfApplicationItems, Mode=TwoWay}"
+				SelectionChanged="ApplicationItemsListView_SelectionChanged">
+				<ListView.ItemTemplate>
+					<DataTemplate x:DataType="data:ApplicationItem">
+						<Grid
+							Padding="0,8"
+							ColumnSpacing="12"
+							RowSpacing="2">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="Auto" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+							<Image
+								Grid.Row="0"
+								Grid.RowSpan="2"
+								Grid.Column="0"
+								VerticalAlignment="Center"
+								Source="{x:Bind Icon}" />
+							<TextBlock
+								Grid.Row="0"
+								Grid.Column="1"
+								Text="{x:Bind Name}"
+								TextTrimming="CharacterEllipsis"
+								TextWrapping="NoWrap" />
+							<TextBlock
+								Grid.Row="1"
+								Grid.Column="1"
+								Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+								Style="{StaticResource CaptionTextBlockStyle}"
+								Text="{x:Bind AppUserModelID}"
+								TextTrimming="CharacterEllipsis"
+								TextWrapping="NoWrap" />
+						</Grid>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+			<ScrollView
+				Grid.Column="1"
+				Height="600"
+				MaxWidth="300"
+				MaxHeight="600"
+				Padding="0,0"
+				Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+				BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+				BorderThickness="1"
+				CornerRadius="{StaticResource OverlayCornerRadius}">
+
+				<Grid>
+
+					<TextBlock
+						x:Name="NoJumpListAvailableTextBlock"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Text="No jump list available"
+						Visibility="{x:Bind ViewModel.JumpListItems, Converter={StaticResource EmptyCollectionToNegateVisibilityConverter}, Mode=OneWay}" />
+
+					<ItemsControl
+						x:Name="JumpListItemsControl"
+						ItemTemplateSelector="{StaticResource JumpListItemTemplateSelector}"
+						ItemsSource="{x:Bind ViewModel.JumpListItems, Mode=OneWay}" />
+
+				</Grid>
+			</ScrollView>
+
+		</Grid>
+	</Grid>
 </Page>

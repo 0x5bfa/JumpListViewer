@@ -94,6 +94,9 @@ namespace JumpListViewer.Utilities
 					// Get the category data (e.g., the type, the name, and the count of the destinations)
 					hr = _customDestList2Ptr->GetCategory(dwCategoryIndex, GETCATFLAG.DEFAULT, &category).ThrowOnFailure();
 
+					if (category.Type is APPDESTCATEGORYTYPE.STANDARD)
+						continue;
+
 					// Get the category name
 					pszCategoryName = (char*)NativeMemory.AllocZeroed(256);
 					PInvoke.SHLoadIndirectString(category.Anonymous.Name, pszCategoryName, 256, null);
@@ -110,7 +113,7 @@ namespace JumpListViewer.Utilities
 				finally
 				{
 					if (pszCategoryName is not null) NativeMemory.Free(pszCategoryName);
-					if (category.Anonymous.Name.Value is not null) PInvoke.CoTaskMemFree(category.Anonymous.Name);
+					if (category.Anonymous.Name.Value is not null && category.Type is not APPDESTCATEGORYTYPE.STANDARD) PInvoke.CoTaskMemFree(category.Anonymous.Name);
 				}
 			}
 

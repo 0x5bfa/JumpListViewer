@@ -12,7 +12,7 @@
 
 				<XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
 
-				<ResourceDictionary Source="/JumpListItemButtonStyle.xaml" />
+				<ResourceDictionary Source="/Controls/JumpListItemButtonStyle.xaml" />
 
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>

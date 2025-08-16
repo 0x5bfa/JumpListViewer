@@ -2,15 +2,21 @@
 // Licensed under the MIT License.
 
 using Microsoft.UI.Xaml.Controls;
-using Windows.Foundation.Collections;
 
 namespace JumpListViewer.Views
 {
 	public sealed partial class MainPage : Page
 	{
+		private MainPageViewModel ViewModel { get; } = new();
+
 		public MainPage()
 		{
 			InitializeComponent();
+		}
+
+		private void ApplicationItemsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			ViewModel.EnumerateJumpListItems();
 		}
 	}
 }

@@ -245,3 +245,5 @@ IExtractIconW
 IExtractImage
 LoadImage
 GetIconInfo
+PKEY_AppUserModel_ID
+BHID_PropertyStore
